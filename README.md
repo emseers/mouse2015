@@ -4,7 +4,7 @@ Platformer thing with Unity
 ##Important notes
  - Level data/code is source controlled here on github
  - All binary assets are stored on a shared Google Drive directory
- - Project settings/editor settings do not need to be synced to this repo at this time(?), use your judgment here.
+ - <del>Project settings/editor settings do not need to be synced to this repo at this time(?), use your judgment here.</del>
 
 ##Setup Instructions
 1. Clone repo
@@ -15,3 +15,6 @@ Platformer thing with Unity
 3. Symbolic link the GDrive folders to their corresponding locations in the repo
  - Use [Link](http://schinagl.priv.at/nt/hardlinkshellext/linkshellextension.html) Shell Extension to save time
 
+##Dependencies
+Unity 5.2.2f
+Standard Assets/Prototyping

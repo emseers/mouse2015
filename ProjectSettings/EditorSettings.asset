@@ -10,3 +10,6 @@ EditorSettings:
   m_WebSecurityEmulationHostUrl: https://github.com/Emseers/mouse2015
   m_DefaultBehaviorMode: 0
   m_SpritePackerMode: 2
+  m_SpritePackerPaddingPower: 1
+  m_ProjectGenerationIncludedExtensions: txt;xml;fnt;cd
+  m_ProjectGenerationRootNamespace: 
