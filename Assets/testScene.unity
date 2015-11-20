@@ -201,7 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 3
-  playerRotateSpeed: 5
+  playerRotateSpeed: .100000001
   angleToRotate: 0
 --- !u!1 &1043534616
 GameObject:
