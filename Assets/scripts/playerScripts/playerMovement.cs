@@ -17,9 +17,40 @@ public class playerMovement : MonoBehaviour
     void Update()
     {
         if (Input.GetKey(KeyCode.W))
-            this.transform.Translate(0f, 0f, playerSpeed * Time.deltaTime, Space.Self);
+        {
+            if (this.transform.eulerAngles.y != 0)
+            {
+                if (Mathf.Abs(0 - this.transform.eulerAngles.y) < 5) //Tolerance
+                    this.transform.Rotate(0f, 0 - this.transform.eulerAngles.y, 0f, Space.World); //Rotate to become 0
+                else if (Mathf.Abs(this.transform.eulerAngles.y - 360) < 5) //Tolerance
+                    this.transform.Rotate(0f, this.transform.eulerAngles.y - 360, 0f, Space.World); //Rotate to become 0
+                else if (this.transform.eulerAngles.y > 0 && this.transform.eulerAngles.y < 180) //Quadrant 1 and 4
+                {
+                    angleToRotate = this.transform.eulerAngles.y;
+                    this.transform.Rotate(0f, -1 * angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate counterclockwise
+                }
+                else //Quadrant 2 and 3
+                {
+                    angleToRotate = 360 - this.transform.eulerAngles.y;
+                    this.transform.Rotate(0f, angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate clockwise
+                }
+            }
+            this.transform.Translate(0f, 0f, playerSpeed * Time.deltaTime, Space.World); //Translate forward
+        }
         else if (Input.GetKey(KeyCode.S))
-            this.transform.Translate(0f, 0f, -1 * playerSpeed * Time.deltaTime, Space.Self);
+        {
+            if (this.transform.eulerAngles.y != 180)
+            {
+                if (Mathf.Abs(180 - this.transform.eulerAngles.y) < 5) //Tolerance
+                    this.transform.Rotate(0f, 180 - this.transform.eulerAngles.y, 0f, Space.World); //Rotate to become 180
+                else //All quadrants
+                {
+                    angleToRotate = 180 - this.transform.eulerAngles.y;
+                    this.transform.Rotate(0f, angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate
+                }
+            }
+            this.transform.Translate(0f, 0f, -1 * playerSpeed * Time.deltaTime, Space.World); //Translate backward
+        }
 
         if (Input.GetKey(KeyCode.D))
         {
