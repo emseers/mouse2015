@@ -247,13 +247,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-<<<<<<< HEAD
     - target: {fileID: 2300000, guid: d85d3a32fb6157d488e31edf82b7b1c4, type: 2}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
-=======
->>>>>>> 007ded65c297baf77544abf548c4210bba3e6640
     - target: {fileID: 6400000, guid: d85d3a32fb6157d488e31edf82b7b1c4, type: 2}
       propertyPath: m_Mesh
       value: 
