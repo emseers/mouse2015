@@ -3,6 +3,7 @@ using System.Collections;
 
 public class cameraMovement : MonoBehaviour {
     public GameObject cameraPath = null;
+    public GameObject playerPath = null;
     public GameObject playerObject = null;
     public int currentNode = 0;
     public float testSpeed = 0f;
