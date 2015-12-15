@@ -879,6 +879,10 @@ Prefab:
       propertyPath: m_Name
       value: Corridor 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 90d8e09703679534295bd2cacb73d6de, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90d8e09703679534295bd2cacb73d6de, type: 2}
   m_IsPrefabParent: 0
@@ -1608,6 +1612,10 @@ Prefab:
       propertyPath: m_Name
       value: Corridor 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 90d8e09703679534295bd2cacb73d6de, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90d8e09703679534295bd2cacb73d6de, type: 2}
   m_IsPrefabParent: 0
@@ -2043,7 +2051,7 @@ MonoBehaviour:
   playerPath: {fileID: 746823632}
   playerObject: {fileID: 521369149}
   currentNode: 0
-  testSpeed: .00999999978
+  nodes: 3
 --- !u!1 &2078316685
 GameObject:
   m_ObjectHideFlags: 0
