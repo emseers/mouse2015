@@ -16,9 +16,6 @@ public class playerMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 
-		bool rotateClockwise = false;
-		bool rotateCounterClockwise = false;
-
 		playerAngle = this.transform.eulerAngles.y;
 		if (Input.GetKey(KeyCode.W)) {
 			if (playerAngle != 0) {
@@ -29,11 +26,9 @@ public class playerMovement : MonoBehaviour {
 				else if (playerAngle > 0 && playerAngle < 180) { //Quadrant 1 and 4
 					angleToRotate = playerAngle;
 					this.transform.Rotate(0f, -1 * angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate counterclockwise
-					rotateCounterClockwise = true;
 				} else { //Quadrant 2 and 3
 					angleToRotate = 360 - playerAngle;
 					this.transform.Rotate(0f, angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate clockwise
-					rotateClockwise = true;
 				}
 			}
 			this.transform.Translate(0f, 0f, playerSpeed * Time.deltaTime, Space.World); //Translate forward
@@ -44,10 +39,6 @@ public class playerMovement : MonoBehaviour {
 				else { //All quadrants
 					angleToRotate = 180 - playerAngle;
 					this.transform.Rotate(0f, angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate
-					if (playerAngle < 180)
-						rotateClockwise = true;
-					else
-						rotateCounterClockwise = true;
 				}
 			}
 			this.transform.Translate(0f, 0f, -1 * playerSpeed * Time.deltaTime, Space.World); //Translate backward
@@ -62,17 +53,13 @@ public class playerMovement : MonoBehaviour {
 						angleToRotate = 90 - playerAngle;
 					else //Quadrant 2
 						angleToRotate = 180 - (playerAngle - 270);
-					
-					if (!rotateClockwise)
-						this.transform.Rotate(0f, angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate clockwise
+					this.transform.Rotate(0f, angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate clockwise
 				} else {
 					if (playerAngle > 180) //Quadrant 3
 						angleToRotate = 90 + (playerAngle - 180);
 					else //Quuadrant 4
 						angleToRotate = 90 - (180 - playerAngle);
-					
-					if (!rotateCounterClockwise)
-						this.transform.Rotate(0f, -1 * angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate counterclockwise
+					this.transform.Rotate(0f, -1 * angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate counterclockwise
 				}
 			}
 			this.transform.Translate(playerSpeed * Time.deltaTime, 0f, 0f, Space.World); //Translate right
@@ -85,17 +72,13 @@ public class playerMovement : MonoBehaviour {
 						angleToRotate = 180 - (90 - playerAngle);
 					else //Quadrant 2
 						angleToRotate = playerAngle - 270;
-					
-					if (!rotateCounterClockwise)
-						this.transform.Rotate(0f, -1 * angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate counterclockwise
+					this.transform.Rotate(0f, -1 * angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate counterclockwise
 				} else {
 					if (playerAngle > 180) //Quadrant 3
 						angleToRotate = 90 - (playerAngle - 180);
 					else //Quadrant 4
 						angleToRotate = 90 + (180 - playerAngle);
-					
-					if (!rotateClockwise)
-						this.transform.Rotate(0f, angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Roatate clockwise
+					this.transform.Rotate(0f, angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Roatate clockwise
 				}
 			}
 			this.transform.Translate(-1 * playerSpeed * Time.deltaTime, 0f, 0f, Space.World); //Translate left
