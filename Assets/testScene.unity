@@ -692,8 +692,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 3
   playerRotateSpeed: .100000001
-  playerAngle: 0
-  angleToRotate: 0
 --- !u!1001 &676860441
 Prefab:
   m_ObjectHideFlags: 0
@@ -2050,7 +2048,6 @@ MonoBehaviour:
   cameraPath: {fileID: 1013952460}
   playerPath: {fileID: 746823632}
   playerObject: {fileID: 521369149}
-  currentNode: 0
   nodes: 3
 --- !u!1 &2078316685
 GameObject:
