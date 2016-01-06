@@ -7,8 +7,8 @@ public class cinematicCameraMovement : MonoBehaviour {
 	public GameObject playerObject = null;
 
 	//IMPORTANT: Make sure cameraPath and playerPath have same number of children,
-	//and update this in the Unity Editor to be the correct number
-	public int nodes = 0;
+	//nodes is calculated assuming above is true
+	private int nodes = 0;
 
 	private Vector3 cameraPosition; //A vector to help calculate camera position
 	private Vector3 cameraRotation; //A vector to help calculate camera rotation
@@ -18,6 +18,7 @@ public class cinematicCameraMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start() {
+		nodes = cameraPath.transform.childCount;
 		this.transform.position = getPositionByNode(0); //Set the initial position to the first node (duh)
 	}
 
@@ -63,18 +64,11 @@ public class cinematicCameraMovement : MonoBehaviour {
 	//Sets the ratio to a number between 0 and 1 on how far along the player is between two specified player nodes
 	float getPositionBetweenNodes(int node1, int node2) {
 		//A vector going from node1 to node2
-		Vector3 nodeVector = new Vector3(playerPath.transform.GetChild(node2).transform.position.x -
-										playerPath.transform.GetChild(node1).transform.position.x,
-										playerPath.transform.GetChild(node2).transform.position.y -
-										playerPath.transform.GetChild(node1).transform.position.y,
-										playerPath.transform.GetChild(node2).transform.position.z -
-										playerPath.transform.GetChild(node1).transform.position.z);
-		
+		Vector3 nodeVector = playerPath.transform.GetChild(node2).position - playerPath.transform.GetChild(node1).position;
+
 		//A vector going from node1 to player position
-		Vector3 playerVector = new Vector3(playerPosition.x - playerPath.transform.GetChild(node1).transform.position.x,
-										playerPosition.y - playerPath.transform.GetChild(node1).transform.position.y,
-										playerPosition.z - playerPath.transform.GetChild(node1).transform.position.z);
-		
+		Vector3 playerVector = playerPosition - playerPath.transform.GetChild(node1).position;
+
 		//A vector projection of the player vector projected onto the node vector
 		Vector3 projection = Vector3.Project(playerVector, nodeVector);
 		
