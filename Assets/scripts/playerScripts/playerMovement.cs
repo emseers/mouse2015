@@ -2,86 +2,176 @@
 using System.Collections;
 
 public class playerMovement : MonoBehaviour {
+	public GameObject camera = null;
 	public float playerSpeed = 0f;
 	public float playerRotateSpeed = 0f;
 
-	private float playerAngle = 0f;
-	private float angleToRotate = 0f;
+	private float playerAngleX = 0f;
+	private float playerAngleY = 0f;
+	private float playerAngleZ = 0f;
+
+	private float cameraAngleY = 0f;
+	private float newPLayerAngleY = 0f;
+	private float deltaAngle = 0f;
+
+	private Transform cameraAxis = null;
 
 	// Use this for initialization
 	void Start() {
-
+		playerAngleX = this.transform.eulerAngles.x;
+		playerAngleZ = this.transform.eulerAngles.z;
 	}
 
 	// Update is called once per frame
 	void Update() {
+		cameraAngleY = camera.transform.eulerAngles.y;
+		playerAngleY = this.transform.eulerAngles.y;
 
-		playerAngle = this.transform.eulerAngles.y;
+		//Create another axis to be used with transforming player object that doesn't take into account camera rotation in x and z
+		cameraAxis = new GameObject().transform;
+		cameraAxis.eulerAngles = new Vector3(playerAngleX, cameraAngleY, playerAngleZ);
+
+		//Movement is based relative to the camera
 		if (Input.GetKey(KeyCode.W)) {
-			if (playerAngle != 0) {
-				if (Mathf.Abs(0 - playerAngle) < 5) //Tolerance
-					this.transform.Rotate(0f, 0 - playerAngle, 0f, Space.World); //Rotate to become 0
-				else if (Mathf.Abs(360 - playerAngle) < 5) //Tolerance
-					this.transform.Rotate(0f, 360 - playerAngle, 0f, Space.World); //Rotate to become 0
-				else if (playerAngle > 0 && playerAngle < 180) { //Quadrant 1 and 4
-					angleToRotate = playerAngle;
-					this.transform.Rotate(0f, -1 * angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate counterclockwise
-				} else { //Quadrant 2 and 3
-					angleToRotate = 360 - playerAngle;
-					this.transform.Rotate(0f, angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate clockwise
-				}
+			if (Input.GetKey(KeyCode.A)) {
+				transformNorthWest();
+			} else if (Input.GetKey(KeyCode.D)) {
+				transformNorthEast();
+			} else {
+				transformNorth();
 			}
-			this.transform.Translate(0f, 0f, playerSpeed * Time.deltaTime, Space.World); //Translate forward
 		} else if (Input.GetKey(KeyCode.S)) {
-			if (playerAngle != 180) {
-				if (Mathf.Abs(180 - playerAngle) < 5) //Tolerance
-					this.transform.Rotate(0f, 180 - playerAngle, 0f, Space.World); //Rotate to become 180
-				else { //All quadrants
-					angleToRotate = 180 - playerAngle;
-					this.transform.Rotate(0f, angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate
-				}
+			if (Input.GetKey(KeyCode.A)) {
+				transformSouthWest();
+			} else if (Input.GetKey(KeyCode.D)) {
+				transformSouthEast();
+			} else {
+				transformSouth();
 			}
-			this.transform.Translate(0f, 0f, -1 * playerSpeed * Time.deltaTime, Space.World); //Translate backward
+		} else if (Input.GetKey(KeyCode.A)) {
+			transformWest();
+		} else if (Input.GetKey(KeyCode.D)) {
+			transformEast();
+		}
+	}
+
+	void transformNorth() {
+		deltaAngle = Mathf.DeltaAngle(playerAngleY, cameraAngleY);
+
+		if (!Mathf.Approximately(deltaAngle, 0f)) {
+			newPLayerAngleY = Mathf.MoveTowardsAngle(playerAngleY, cameraAngleY, playerRotateSpeed * Time.deltaTime);
+			this.transform.eulerAngles = new Vector3(playerAngleX, newPLayerAngleY, playerAngleZ);
 		}
 
-		if (Input.GetKey(KeyCode.D)) {
-			if (playerAngle != 90) {
-				if (Mathf.Abs(90 - playerAngle) < 5) //Tolerance
-					this.transform.Rotate(0f, 90 - playerAngle, 0f, Space.World); //Rotate to become 90
-				else if (playerAngle < 90 || playerAngle > 270) {
-					if (playerAngle < 90) //Quadrant 1
-						angleToRotate = 90 - playerAngle;
-					else //Quadrant 2
-						angleToRotate = 180 - (playerAngle - 270);
-					this.transform.Rotate(0f, angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate clockwise
-				} else {
-					if (playerAngle > 180) //Quadrant 3
-						angleToRotate = 90 + (playerAngle - 180);
-					else //Quuadrant 4
-						angleToRotate = 90 - (180 - playerAngle);
-					this.transform.Rotate(0f, -1 * angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate counterclockwise
-				}
-			}
-			this.transform.Translate(playerSpeed * Time.deltaTime, 0f, 0f, Space.World); //Translate right
-		} else if (Input.GetKey(KeyCode.A)) {
-			if (playerAngle != 270) {
-				if (Mathf.Abs(270 - playerAngle) < 5) //Tolerance
-					this.transform.Rotate(0f, 270 - playerAngle, 0f, Space.World); //Rotate to become 270
-				else if (playerAngle < 90 || playerAngle > 270) {
-					if (playerAngle < 90) //Quadrant 1
-						angleToRotate = 180 - (90 - playerAngle);
-					else //Quadrant 2
-						angleToRotate = playerAngle - 270;
-					this.transform.Rotate(0f, -1 * angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Rotate counterclockwise
-				} else {
-					if (playerAngle > 180) //Quadrant 3
-						angleToRotate = 90 - (playerAngle - 180);
-					else //Quadrant 4
-						angleToRotate = 90 + (180 - playerAngle);
-					this.transform.Rotate(0f, angleToRotate * Time.deltaTime / playerRotateSpeed, 0f, Space.World); //Roatate clockwise
-				}
-			}
-			this.transform.Translate(-1 * playerSpeed * Time.deltaTime, 0f, 0f, Space.World); //Translate left
+		this.transform.Translate(0f, 0f, playerSpeed * Time.deltaTime, cameraAxis); //Translate forward
+	}
+
+	void transformNorthEast() {
+		cameraAngleY += 45;
+		if (cameraAngleY >= 360)
+			cameraAngleY -= 360;
+
+		deltaAngle = Mathf.DeltaAngle(playerAngleY, cameraAngleY);
+
+		if (!Mathf.Approximately(deltaAngle, 0f)) {
+			newPLayerAngleY = Mathf.MoveTowardsAngle(playerAngleY, cameraAngleY, playerRotateSpeed * Time.deltaTime);
+			this.transform.eulerAngles = new Vector3(playerAngleX, newPLayerAngleY, playerAngleZ);
 		}
+
+		this.transform.Translate(0f, 0f, playerSpeed * Time.deltaTime, cameraAxis); //Translate forward
+		this.transform.Translate(playerSpeed * Time.deltaTime, 0f, 0f, cameraAxis); //Translate right
+	}
+
+	void transformEast() {
+		cameraAngleY += 90;
+		if (cameraAngleY >= 360)
+			cameraAngleY -= 360;
+
+		deltaAngle = Mathf.DeltaAngle(playerAngleY, cameraAngleY);
+
+		if (!Mathf.Approximately(deltaAngle, 0f)) {
+			newPLayerAngleY = Mathf.MoveTowardsAngle(playerAngleY, cameraAngleY, playerRotateSpeed * Time.deltaTime);
+			this.transform.eulerAngles = new Vector3(playerAngleX, newPLayerAngleY, playerAngleZ);
+		}
+
+		this.transform.Translate(playerSpeed * Time.deltaTime, 0f, 0f, cameraAxis); //Translate right
+	}
+
+	void transformSouthEast() {
+		cameraAngleY += 135;
+		if (cameraAngleY >= 360)
+			cameraAngleY -= 360;
+
+		deltaAngle = Mathf.DeltaAngle(playerAngleY, cameraAngleY);
+
+		if (!Mathf.Approximately(deltaAngle, 0f)) {
+			newPLayerAngleY = Mathf.MoveTowardsAngle(playerAngleY, cameraAngleY, playerRotateSpeed * Time.deltaTime);
+			this.transform.eulerAngles = new Vector3(playerAngleX, newPLayerAngleY, playerAngleZ);
+		}
+
+		this.transform.Translate(0f, 0f, -1 * playerSpeed * Time.deltaTime, cameraAxis); //Translate backward
+		this.transform.Translate(playerSpeed * Time.deltaTime, 0f, 0f, cameraAxis); //Translate right
+	}
+
+	void transformSouth() {
+		cameraAngleY += 180;
+		if (cameraAngleY >= 360)
+			cameraAngleY -= 360;
+
+		deltaAngle = Mathf.DeltaAngle(playerAngleY, cameraAngleY);
+
+		if (!Mathf.Approximately(deltaAngle, 0f)) {
+			newPLayerAngleY = Mathf.MoveTowardsAngle(playerAngleY, cameraAngleY, playerRotateSpeed * Time.deltaTime);
+			this.transform.eulerAngles = new Vector3(playerAngleX, newPLayerAngleY, playerAngleZ);
+		}
+
+		this.transform.Translate(0f, 0f, -1 * playerSpeed * Time.deltaTime, cameraAxis); //Translate backward
+	}
+
+	void transformSouthWest() {
+		cameraAngleY -= 135;
+		if (cameraAngleY < 0)
+			cameraAngleY += 360;
+
+		deltaAngle = Mathf.DeltaAngle(playerAngleY, cameraAngleY);
+
+		if (!Mathf.Approximately(deltaAngle, 0f)) {
+			newPLayerAngleY = Mathf.MoveTowardsAngle(playerAngleY, cameraAngleY, playerRotateSpeed * Time.deltaTime);
+			this.transform.eulerAngles = new Vector3(playerAngleX, newPLayerAngleY, playerAngleZ);
+		}
+
+		this.transform.Translate(0f, 0f, -1 * playerSpeed * Time.deltaTime, cameraAxis); //Translate backward
+		this.transform.Translate(-1 * playerSpeed * Time.deltaTime, 0f, 0f, cameraAxis); //Translate left
+	}
+
+	void transformWest() {
+		cameraAngleY -= 90;
+		if (cameraAngleY < 0)
+			cameraAngleY += 360;
+
+		deltaAngle = Mathf.DeltaAngle(playerAngleY, cameraAngleY);
+
+		if (!Mathf.Approximately(deltaAngle, 0f)) {
+			newPLayerAngleY = Mathf.MoveTowardsAngle(playerAngleY, cameraAngleY, playerRotateSpeed * Time.deltaTime);
+			this.transform.eulerAngles = new Vector3(playerAngleX, newPLayerAngleY, playerAngleZ);
+		}
+
+		this.transform.Translate(-1 * playerSpeed * Time.deltaTime, 0f, 0f, cameraAxis); //Translate left
+	}
+
+	void transformNorthWest() {
+		cameraAngleY -= 45;
+		if (cameraAngleY < 0)
+			cameraAngleY += 360;
+
+		deltaAngle = Mathf.DeltaAngle(playerAngleY, cameraAngleY);
+
+		if (!Mathf.Approximately(deltaAngle, 0f)) {
+			newPLayerAngleY = Mathf.MoveTowardsAngle(playerAngleY, cameraAngleY, playerRotateSpeed * Time.deltaTime);
+			this.transform.eulerAngles = new Vector3(playerAngleX, newPLayerAngleY, playerAngleZ);
+		}
+
+		this.transform.Translate(0f, 0f, playerSpeed * Time.deltaTime, cameraAxis); //Translate forward
+		this.transform.Translate(-1 * playerSpeed * Time.deltaTime, 0f, 0f, cameraAxis); //Translate left
 	}
 }

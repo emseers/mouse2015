@@ -788,8 +788,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35420e37c5661364d9d03998023d7e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camera: {fileID: 2064835229}
   playerSpeed: 3
-  playerRotateSpeed: .100000001
+  playerRotateSpeed: 1500
 --- !u!65 &521369152
 BoxCollider:
   m_ObjectHideFlags: 0
