@@ -5,6 +5,7 @@ public class cinematicCameraMovement : MonoBehaviour {
 	public GameObject cameraPath = null;
 	public GameObject playerPath = null;
 	public GameObject playerObject = null;
+	public float cameraSpeed = 0f;
 
 	//IMPORTANT: Make sure cameraPath and playerPath have same number of children,
 	//nodes is calculated assuming above is true
@@ -16,6 +17,9 @@ public class cinematicCameraMovement : MonoBehaviour {
 	private Vector3 playerPosition; //A vector to store player position
 	private float ratio; //A variable to store how far in between two nodes the player is
 
+	private Vector3 currentPosition; //Current camera position
+	private Vector3 newPosition; //New camera position
+
 	// Use this for initialization
 	void Start() {
 		nodes = cameraPath.transform.childCount;
@@ -25,6 +29,7 @@ public class cinematicCameraMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		playerPosition = playerObject.transform.position;
+		currentPosition = this.transform.position;
 
 		//An array to store distances between all possible nodes (to see which one is minimum)
 		float[] distances = new float[nodes];
@@ -48,7 +53,10 @@ public class cinematicCameraMovement : MonoBehaviour {
 		//Some vector math to set the correct camera position based on ratio
 		cameraPosition = getPositionByNode(instance + 1) - getPositionByNode(instance);
 		cameraPosition *= ratio;
-		this.transform.position = getPositionByNode(instance) + cameraPosition;
+		newPosition = getPositionByNode(instance) + cameraPosition;
+		this.transform.position = new Vector3(Mathf.MoveTowards(currentPosition.x, newPosition.x, cameraSpeed),
+			Mathf.MoveTowards(currentPosition.y, newPosition.y, cameraSpeed),
+			Mathf.MoveTowards(currentPosition.z, newPosition.z, cameraSpeed));
 	}
 
 	// Returns a vector containing the specified camera node position

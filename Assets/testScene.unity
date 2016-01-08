@@ -2375,6 +2375,7 @@ MonoBehaviour:
   cameraPath: {fileID: 1013952460}
   playerPath: {fileID: 746823632}
   playerObject: {fileID: 521369149}
+  cameraSpeed: .100000001
 --- !u!1 &2078316685
 GameObject:
   m_ObjectHideFlags: 0
